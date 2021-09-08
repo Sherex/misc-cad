@@ -1,5 +1,5 @@
 // Render bug remover in preview
-rbr = $preview ? 0.01 : 0;
+rbr = 0.01;
 
 /* [Render] */
 // Number of fragments
@@ -7,8 +7,8 @@ $fn = 250; // [1:1:500]
 
 /* [Dimensions] */
 ball_diameter = 13.8;
-screw_thread_diameter = 3.8;
-screw_head_diameter = 6.8; // Hex shaped
+screw_thread_diameter = 3.8 + 0.8; // + calibration
+screw_head_diameter = 6.8 + 0.9; // Hex shaped + calibration
 screw_head_diameter_width_ratio = 0.5773529411764706;
 screw_head_width = screw_head_diameter * screw_head_diameter_width_ratio;
 screw_head_height = 8;
@@ -29,15 +29,8 @@ module hex_screw () {
   }
 }
 
-module ball_with_stem () {
-  sphere(d=ball_diameter);
-  translate([0, 0, -stem_height_from_middle / 2]) {
-    cylinder(d=stem_diameter, h=stem_height_from_middle, center=true);
-  }
-}
-
 difference() {
-  ball_with_stem();
+  sphere(d=ball_diameter);
   translate([0, 0, ball_diameter / 2 - screw_head_height / 2]) {
     hex_screw();
   }
